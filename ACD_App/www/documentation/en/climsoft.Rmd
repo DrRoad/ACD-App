@@ -1,0 +1,132 @@
+<a name="climsoft"></a>
+
+# CLIMSOFT
+If the option `CLIMSOFT` is selected, the user will be asked to select one type of database: `access` or `mariadb`.
+
+Once one of both has been selected, a new field pops-up to select the Data Name Source (DNS) of the database to which the user wants to connect. Please notice that the options available are those DNS defined previously in the ODBC Tool (see Section [Connection to a database](#odbc))
+After selecting the database the user will be asked to log-in into the ACD-App prior any product can be created. The default users available are:
+
+* `admin`: this user has full control of the ACD-App
+* `operator`: this user has restricted acces to the ACD-App. The default settings allows the `operator` to create maps, create plots, make metadata reports and get an overview of the database. By default he is not allowed to download any data.
+
+The `admin` has the possibility of adding, removing or modifying the user rights, as well as deleting or creating new user accounts.
+
+The options available under `CLIMSOFT` are described below.
+
+<a name="map"></a>
+
+## Create Map
+
+Creates a Map with the location of all the stations available in the CLIMSOFT database. The information required to plot the station location is stored in the CLIMSOFT database. If it is an `MS-access db`, then the information is retrieved from the tables `station` and `station_location`. If, instead, it is a `mariadb db`, the information will be retrieved from the tables `station` and `stationlocationhistory`.
+
+It is an interactive map in which the user can select one station to know its latitude and longitude, as well as its WMO id. By default, all the stations are shown, but the user can filter the data by `authority` (see legend on the right side). This is specially usefull if the database has a lot of different data sources. Then the user can select the data source(s) in which he is interested.
+
+The map can also be download as a `.png` file.
+
+```{r, echo = FALSE}
+createRandomMap(df4)
+```
+<center>Figure 11. Example of an interactive map </center><br>
+
+<a name="table"></a>
+
+## Create Table {#table}
+
+Once a station is selected on the Map, the user will be able to visualize the data available for that station by selecting the `Create Table` option. The displayed come from the tables `observation` and `obs_element` in case of `MS-access db`, and `observationinitial` and `obselement` in case of `mariadb db`.
+
+The Table allows filtering the data since each column includes a filter field below the header. Besides, the Table includes a `search` field to facilitate the search of a specific parameter, date, etc.
+
+If the user has the rights to download data, then he will be able to download the Table in a `.csv` file.
+
+```{r, echo = FALSE}
+createRandomTable(df.table.new2, language)
+```
+
+<a name="plots"></a>
+
+## Create Plots {#plots}
+
+This option allows the user to plot the data available in the database. The user can select one or more station, and one or more elements. The user can select then one of the following type of graphics: `Histogram`, `Timeseries`, `Timeseries_comparison` and `Windrose` (Similarly to what has been described in the section [LOCAL_FILE](#local_file)). Before plotting, the user can also specify the date range. Examples of graphic types available are shown below.
+
+* **Histogram**
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$histogram_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+```
+```{r, echo = FALSE}
+k1 %>% layer_histograms(width = 0.5)
+```
+
+<center>Figure 12. Example of an interactive Histogram </center><br>
+
+* **Timeseries & Timeseries comparison**
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$timeseries_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+#invisible(lapply(obj,function(x) plot(x,main="some plot")))
+```
+```{r, echo = FALSE, fig.height=2.5 }
+k1
+```
+<center>Figure 13. Example of an interactive timeseries </center><br>
+
+* **Windrose**
+
+```{r, echo = FALSE, include = FALSE}
+k <- climObj.wind$windrose_shiny()
+```
+```{r, echo = FALSE}
+k[[1]][[1]][[1]][[1]][[1]]$plot
+```
+<center>Figure 14. Example of windrose </center><br>
+
+<a name="report"></a>
+
+## Create Report {#report}
+
+The ACD-App allows creating a `.pdf` report for a given location. This report contains the main metadata related to the selected location(s). It is neccessary to have `MikTeX` installed in order to run this option properly. The App should be able to install the `MikTeX` program automatically when it is run for the first time. The user can download and install the program separately at any time (<https://miktex.org/download>).
+
+The Report includes the following information:
+
+* **Location:** A map with the location of the station(s) selected for the report.
+* **Metadata:** Information about the metadata of the station(s), such as station id, authority , begin and end date of measurements, longitude, latitude, height, and id alias.
+* **Elements available:** Availability of meteorological elements for the selected station(s). This includes the begin and end of the measurements for each element, the number of records expected, the actual number of records available in the database, and the corresponding estimated missing records (in per cent)
+
+<a name="overview"></a>
+
+## Database Overview {#overview}
+
+This option has been included to get a quick overview of the data available in the CLIMSOFT database. This Overview allows the user to see the data availability organized by **Authority**, **Station** or  **Element** in an interactive table in which the user is able to filter the results. The user can also download the overview data if he has the rights to do so.
+
+<a name="download"></a>
+
+## Download data
+
+This option allows the user to make a data request to the database. First, the desired station(s) have to be selected (it is possible to select all the stations as well). Then the user can select the element(s) and date range of interest. When these fields are fulfilled, the button `Request Data` shows up. When pressing the button, a table with the requested data will appear. These data can be also filtered by the user using the filter fields placed just below the column headers. If the user has the `Download` right, he will be able to download the data in a `.csv` format. The download button is paced below the table.
+
+<a name="user_rights"></a>
+
+## Set up User rights
+
+> _**Note:** Option only available for the `Administrator`_
+
+The `Administrator` (default username: *admin*) can control the user rights with this option. The rights that can be given are:
+
+* Map: If checked, the user will be able to create Maps (see [Create Map](#map) section).
+* Table: If checked, the user will be able to create a table with data of the station selected in the Map (see [Create Table ](#table) section)
+* Plots: If checked, the user will be able to create Graphics (see [Create Plots](#plots) section)
+* Report: If checked, the user will be able to create a Report with Metadata of selected location(s) (see [Create Report](#report) section)
+* Overview: If checked, the user will be able to have an overview of the data stored in the database (see [Database Overview](#overview) section)
+* RClimDex: If checked, the user will be able to create different Climate Indices based on the R-Tool "RClimDex" (This option is currently deactivated)
+* User Rights: If checked, the user will be able to control the user rights of other users (it is highly recommended that only the `admin` has access to this option)
+* Download: If checked, the user will be able to, not only view the data, but also download data. The download of data will be then active within the following options:
+    
+    + Create Table
+    + Create Plots
+    + Overview
+    + Download data
+
+
+

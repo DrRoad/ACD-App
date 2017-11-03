@@ -1,0 +1,83 @@
+<a name="dwd_ftp"></a>
+
+# DWD-ftp
+
+This option allows the user the download of data from the ftp-server of the Climate Data Centre of the DWD (<ftp://ftp-cdc.dwd.de/pub/CDC/>) and the interaction with these data. The options available are:
+
+## Create Plots
+
+This option allows the user to plot the data of interest. The user has to type in the station ID, select the time period (`hourly`or `daily`), the graphic type and the element (or elements). The user can select then one of the following type of graphics: `Histogram`, `Timeseries` and `Windrose` (Similarly to what has been described in the [LOCAL_FILE](#local_file) section). Before plotting, the user can also specify the date range. Examples of graphic types available are shown below.
+
+* **Histogram**
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$histogram_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+```
+```{r, echo = FALSE}
+k1 %>% layer_histograms(width = 0.5)
+```
+
+<center>Figure 15. Example of an interactive Histogram </center><br>
+
+* **Timeseries**
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$timeseries_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+#invisible(lapply(obj,function(x) plot(x,main="some plot")))
+```
+```{r, echo = FALSE, fig.height=2.5 }
+k1
+```
+<center>Figure 16. Example of an interactive timeseries </center><br>
+
+* **Windrose**
+
+```{r, echo = FALSE, include = FALSE}
+k <- climObj.wind$windrose_shiny()
+```
+```{r, echo = FALSE}
+k[[1]][[1]][[1]][[1]][[1]]$plot
+```
+<center>Figure 17. Example of windrose </center><br>
+
+> _**Note:** The row data with the values used for plotting are saved in the local machine in the path:_
+
+    ```{r, echo = F}
+file.location <- file.path(Sys.getenv("HOME"), "tmp_from_get.plots")
+cat(file.location)
+```
+
+
+<a name="rclimdex"></a>
+
+## RClimDex
+
+If the user selects this option, it will be able to calculate up to 27 climate indices, such as *Number of frost days* (FD), *Number of summer days* (SU), etc. for a selected station.
+
+A complete list of the indices can be found in the Website of the ETCCDI/CRD Climate Change Indices (<http://etccdi.pacificclimate.org/list_27_indices.shtml>)
+
+To calculate the indices, the ACD-App uses the `RClimDex` R software package, a software developed and maintained  Xuebin Zhang and Yang Feng at the Climate Research Branch of the Meteorological Service of Canada. [ETCCDI/CRD, 2017](#references)
+
+Once the user has selected a station, a new window will open to guide the user through RClimDex v1.0. The main steps to follow are:
+
+* Run Quality Control: Select criteria for the quality control for Temperature (standard deviation) and Precipitation (upper limit). 
+
+> _**Note:** Ignore the field *Station name or code*_
+
+* Indices Calculation: The user will be asked to define parameters for the calculation (e.g. first and last year of base period).
+After defining the parameters, a new window with the different indices will pop-up. The user can then select the indices to calculate.
+
+> _**Note:** It may take more than 5 min to compute all the indices. Please, be patient, you will be informed once computations are done._
+
+Once the calculation is finished, the graphics with the indices shown in the ACD-App.
+
+The Manual of RClimDex can be downloaded here: <http://etccdi.pacificclimate.org/RClimDex/RClimDexUserManual.doc>
+
+##Precipitation Check
+
+It is a quality control option for DWD data, since it compares two datasets of precipitation data that should contain the same data: `more prcp-data` dataset and  and `kl-data`. If differences are detected, the will be asked to open a `.csv` file with the discrepancies.
+
+
+

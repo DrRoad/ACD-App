@@ -1,0 +1,8 @@
+<a name="annex1"></a>
+
+# Anexo 1
+
+```{r, echo = FALSE}
+df <- read.csv("../examples/default_labels.csv")
+knitr::kable(df)
+```

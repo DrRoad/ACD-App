@@ -1,0 +1,24 @@
+# Running the ACD-App
+
+To run the application, just double click on the file `ACD-App.bat`. After a few seconds, a web browser opens. The ACD-App interface appears directly on the web-browser (see Figure 9). The application is ready to use!
+
+It can also be accessed from other computers connected to the Intranet. To access to the ACD-App from another PC, open a browser (e.g. Mozilla) and type the following Address:
+
+```{r, echo = FALSE}
+x <- system("ipconfig", intern=TRUE)
+z <- x[grep("IPv4", x)]
+ip <- gsub(".*? ([[:digit:]])", "\\1", z)
+
+cat(paste0("http://",ip, ":3182"))
+```
+
+The user has to select then on of the following source of data:
+
+* CLIMSOFT
+* DWD-ftp
+* LOCAL_FILE
+
+```{r, out.width = "500px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "data_source.png"))
+```
+<center>Figure 10. Data source available</center><br>

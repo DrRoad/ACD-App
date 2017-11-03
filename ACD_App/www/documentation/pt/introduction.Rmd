@@ -1,0 +1,11 @@
+# Introdução
+A *Análise de Aplicação de Dados Climáticos* (ACD-App) foi desenvolvida sob a iniciativa SASSCAL (<http://www.sasscal.org>) através da Climate Task *Gerenciamento histórico e contínuo de dados climáticos* para facilitar a visualização de dados climáticos Nos serviços meteorológicos de Angola, Botswana e Zâmbia.
+
+A primeira abordagem foi permitir a interação com dados climáticos armazenados em CLIMSOFT (<http://www.climsoft.org>), um Sistema de Gerenciamento de Dados Climáticos (CDMS) desenvolvido na África e instalado em todos os serviços meteorológicos do paises do SASSCAL. Este aplicativo foi melhorado ao longo dos anos para que ele também pode ser usado para interagir com dados climáticos armazenados em arquivos crie vários produtos climáticos.
+
+A App fornece recursos específicos, dependendo da fonte de dados com a qual o usuário está trabalhando (CLIMSOFT ou um arquivo local)
+
+A ferramenta foi desenvolvida em Shiny, um pacote open source R que fornece uma estrutura web poderosa para a construção de aplicações web usando R (<https://shiny.rstudio.com/>). Shiny ajuda a transformar análises de dados em aplicações web interativas sem exigir HTML, CSS ou JavaScript ([RStudio, 2017](#referências))
+
+Este manual fornecerá uma visão geral do aplicativo, explicando como instalá-lo, como executá-lo e como usá-lo.
+

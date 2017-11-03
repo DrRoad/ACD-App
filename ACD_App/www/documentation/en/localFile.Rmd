@@ -1,0 +1,54 @@
+<a name="local_file"></a>
+
+# LOCAL_FILE
+If the option `LOCAL_FILE` is selected, the user will be asked to select one or more ASCII files with the data that the user wants to visualize. The formats accepted are: `.txt` and `.csv`
+
+The structure of the data stored in the file can be different but it has to contain, at least, the following information:
+
+* Station identifier (e.g. `station_id`) 
+* Date or datetime when the observation was done (e.g. `date`). In most cases, the App will be able to detected the date format automatically. 
+* Name of the element(s) observed (e.g. `temp_max`)
+
+The table below shows an example of an accepted file structure:
+
+| station_id  | date       |     temp_max|
+|------------:|-----------:|------------:|
+|       IDL001|  1880-01-01|         32.0|
+|       IDL001|  1880-01-02|         34.7|
+|       IDL001|  1880-01-03|         32.7|
+|       IDL001|  1880-01-04|         33.2|
+|       IDL001|  1880-01-05|         34.0|
+|       IDL001|  1880-01-06|         33.4|
+
+You can download a `.csv` file example [here](../examples/localFile.csv). 
+
+```{r, echo = FALSE}
+library(shiny)
+show_labelsNew()
+```
+
+Please, be aware that the ACD-App will only recognize the elements that have a specific header. These headers are defined in the function 
+`ident_var` of the `climssc` package. You can find a list of default headers used in package `climssc` in this [file](../examples/default_labels.csv) or in [Annex 1](#annex1). 
+
+Once the file(s) have been selected, the App will try to recognize automatically the elements available in the file(s), as well as the date format. If it is not possible to detect these variables automatically, the user will get a message explaining  what the problem is. 
+
+If the App recognizes the structure of the file(s), then it will ask the user to select one type of graphic. The options available are: 
+`Histogram`, `Timeseries`, `Timeseries_comparison` and `Windrose`.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "type_graphics.png"))
+```
+<center>Figure 15. Type of graphics available</center><br>
+
+Once the user has selected one of the options, just click OK and the graphic(s) will be created (see Figure 16). The App allows the download of the graphic, but also the download of the data.
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$timeseries_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+#invisible(lapply(obj,function(x) plot(x,main="some plot")))
+```
+
+```{r, echo = FALSE, fig.height=2.5,fig.align='center' }
+k1
+```
+<center>Figure 16. Example of an interactive timeseries retrieved from a `.csv` file</center><br>

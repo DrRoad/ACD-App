@@ -1,0 +1,132 @@
+<a name="climsoft"></a>
+
+# CLIMSOFT
+Se a opção `CLIMSOFT` for selecionada, o usuário será solicitado a selecionar um tipo de banco de dados:` access` ou `mariadb`.
+
+Uma vez que um dos dois foi selecionado, um novo campo pop-up para selecionar a fonte de nome de dados (DNS) do banco de dados ao qual o usuário deseja se conectar. Observe que as opções disponíveis são aqueles DNS definidos anteriormente na Ferramenta ODBC (consulte a Seção [Conexão a um banco de dados](# odbc))
+Depois de selecionar o banco de dados, o usuário será solicitado a efetuar login no ACD-App antes que qualquer produto possa ser criado. Os usuários padrão disponíveis são:
+
+* `Admin`: este utilizador tem o controlo total do ACD-App
+* `Operator`: este utilizador tem acesso restrito ao ACD-App. As configurações padrão permitem que o operador crie mapas, crie gráficos, faça relatórios de metadados e obtenha uma visão geral do banco de dados. Por padrão, ele não tem permissão para fazer download de dados.
+
+O `admin` tem a possibilidade de adicionar, remover ou modificar os direitos de usuário, bem como excluir ou criar novas contas de usuário.
+
+As opções disponíveis em `CLIMSOFT` são descritos abaixo.
+
+<a name="map"></a>
+
+## Criar mapa
+
+Cria um Mapa com a localização de todas as estações disponíveis no banco de dados CLIMSOFT. As informações necessárias para traçar o local da estação são armazenadas na base de dados CLIMSOFT. Se for um `db` MS-access, então as informações são recuperadas das tabelas` station` e `station_location`. Se, em vez disso, for um `mariadb db`, as informações serão recuperadas das tabelas` station` e `stationlocationhistory`.
+
+É um mapa interativo no qual o usuário pode selecionar uma estação para conhecer sua latitude e longitude, bem como seu ID da OMM. Por padrão, todas as estações são mostradas, mas o usuário pode filtrar os dados por `autoridade '(veja a legenda no lado direito). Isso é especialmente útil se o banco de dados tem um monte de fontes de dados diferentes. Em seguida, o usuário pode selecionar a fonte de dados (s) em que ele está interessado.
+
+O mapa também pode ser baixado como um arquivo `.png`.
+
+```{r, echo = FALSE, warning=F}
+createRandomMap(df4)
+```
+<center>Figura 11. Exemplo de um mapa interativo</center><br>
+
+<a name="table"></a>
+
+## Criar tabela
+
+Uma vez selecionada uma estação no Mapa, o usuário poderá visualizar os dados disponíveis para essa estação selecionando a opção `Criar Tabela '. As informações apresentadas vêm das tabelas `observation` e` obs_element` no caso de `MS-access db`,` observationinitial` e `obselement` no caso de` mariadb db`.
+
+A Tabela permite filtrar os dados, pois cada coluna inclui o campo de filtro abaixo do cabeçalho. Além disso, a Tabela inclui um campo `search` para facilitar a busca de um parâmetro específico, data, etc.
+
+Se o usuário tem os direitos para baixar dados, então ele poderá baixar a Tabela em um arquivo `.csv`.
+
+```{r, echo = FALSE}
+createRandomTable(df.table.new2, language)
+```
+
+<a name="plots"></a>
+
+## Criar gráficos
+
+Essa opção permite ao usuário plotar os dados disponíveis no banco de dados. O usuário pode selecionar uma ou mais estações, e um ou mais elementos. O usuário pode selecionar um dos seguintes tipos de gráficos: `Histograma`, `Séries temporais`, `Comparação de séries temporais` e` Rosa dos Ventos` (Similarmente ao que foi descrito na seção [LOCAL_FILE](#local_file)). Antes de plotar, o usuário também pode especificar o intervalo de datas. Exemplos de tipos gráficos disponíveis são mostrados abaixo.
+
+* **Histogramas**
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$histogram_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+```
+```{r, echo = FALSE}
+k1 %>% layer_histograms(width = 0.5)
+```
+
+<center>Figure 12. Example of an interactive Histogram </center><br>
+
+* **Séries temporáis**
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$timeseries_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+#invisible(lapply(obj,function(x) plot(x,main="some plot")))
+```
+```{r, echo = FALSE, fig.height=2.5 }
+k1
+```
+<center>Figura 13. Exemplo de uma série temporal interativa </center><br>
+
+* **Rosa do ventos**
+
+```{r, echo = FALSE, include = FALSE}
+k <- climObj.wind$windrose_shiny()
+```
+```{r, echo = FALSE}
+k[[1]][[1]][[1]][[1]][[1]]$plot
+```
+<center>Figura 14. Exemplo de rosa de vento </center><br>
+
+<a name="report"></a>
+
+## Criar relatório
+
+O ACD-App permite criar um relatório `.pdf` para um determinado local. Este relatório contém os metadados principais relacionados ao (s) local (is) selecionado (s). É necessário ter o `MikTeX` instalado para executar esta opção corretamente. O aplicativo deve ser capaz de instalar o programa `MikTeX` automaticamente quando ele é executado pela primeira vez. O usuário pode baixar e instalar o programa separadamente a qualquer momento (<https://miktex.org/download>).
+
+O Relatório inclui as seguintes informações:
+
+* **Local:** Um mapa com a localização das estações selecionadas para o relatório.
+* **Metadados:** Informações sobre os metadados das estações, tais como id da estação, autoridade, data de início e de término das medições, longitude, latitude, altura e id alias.
+* **Elementos disponíveis:** Disponibilidade de elementos meteorológicos para a (s) estação (s) seleccionada (s). Isso inclui o início eo fim das medições para cada elemento, o número de registros esperados, o número real de registros disponíveis na base de dados e os correspondentes registros perdidos estimados (em percentagem)
+
+<a name="overview"></a>
+
+## Visão geral da base de dados
+
+Esta opção foi incluída para obter uma visão geral rápida dos dados disponíveis no banco de dados CLIMSOFT. Esta Visão Geral permite ao usuário ver a disponibilidade de dados organizada por **Autoridade**, por **Estação** ou por **Elemento** em uma tabela interativa na qual o usuário é capaz de filtrar os resultados. O usuário também pode baixar visão geral da base de dados se ele tem o direito de fazê-lo.
+
+<a name="download"></a>
+
+## Download de dados
+
+Esta opção permite que o usuário faça uma solicitação de dados para o banco de dados. Primeiro, é necessário selecionar a(s) estação(ões) desejada(s) (é possível selecionar todas as estações também). Em seguida, o usuário pode selecionar o (s) elemento (s) eo intervalo de datas de interesse. Quando estes campos são preenchidos, o botão `Request Data` aparece. Ao pressionar o botão, aparecerá uma tabela com os dados solicitados. Esses dados também podem ser filtrados pelo usuário usando os campos de filtro colocados logo abaixo dos cabeçalhos das colunas. Se o usuário tiver o direito `Download`, ele poderá baixar os dados em um formato` .csv`. O botão de download é marcado abaixo da tabela.
+
+<a name="user_rights"></a>
+
+## Configurar direitos de usuário
+
+> _**Nota:** Opção disponível apenas para o `Administrador`_
+
+O `Administrador` (nome de usuário padrão: *admin*) pode controlar os direitos de usuário com esta opção. Os direitos que podem ser dados são:
+
+* Mapa: Se marcada, o usuário poderá criar Mapas (consulte a seção [Criar Mapa](#map)).
+* **Tabela**: Se marcada, o usuário poderá criar uma tabela com os dados da estação selecionada no Mapa (consulte a seção [Criar Tabela](#table))
+* **Gráficos**: Se selecionado, o usuário será capaz de criar Gráficos (consulte a seção [Criar gráficos](#plots)
+* **Relatório**: Se selecionado, o usuário poderá criar um Relatório com Metadados de locais selecionados (consulte a seção [Criar Relatório](#report))
+* **Visão geral**: Se marcada, o usuário poderá ter uma visão geral dos dados armazenados no banco de dados (consulte a seção [Visão geral da base de dados](#overview)
+* **RClimDex**: Se marcado, o usuário será capaz de criar diferentes Índices de Clima com base na R-Tool "RClimDex" (Esta opção está atualmente desativada)
+* **Direitos do Usuário**: Se marcado, o usuário poderá controlar os direitos de usuários de outros usuários (é altamente recomendado que somente o `admin` tenha acesso a esta opção)
+* **Download**: Se marcada, o usuário será capaz de, não só ver os dados, mas também baixar dados. O download de dados será então ativo nas seguintes opções:
+    
+    + Criar tabela
+    + Criar lotes
+    + Visão geral
+    + Download de dados
+
+
+

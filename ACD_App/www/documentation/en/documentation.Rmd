@@ -1,0 +1,108 @@
+---
+title: "Analysis of Climate Data (ACD-App)"
+subtitle: "Version 1.0 (SASSCAL)"
+author: "Rafael Posada"
+date: "1st September 2017"
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+options(warn = -1, message = F)
+suppressMessages(library(shiny))
+suppressMessages(library(climssc))
+suppressMessages(library(uuid))
+suppressMessages(library(leaflet))
+suppressMessages(library(randomNames))
+suppressMessages(library(dygraphs))
+suppressMessages(library(ggvis))
+abbr <- "en"
+language <- "english"
+fig.path <- file.path("figures")
+print(getwd())
+source("../functions/show_labelsNew.R")
+source("../functions/pkgs.required.R")
+pkgs <- pkgs.required()
+pkgs2 <- data.frame(Nr = c(1:length(pkgs[[1]])), packs = pkgs[[1]])
+load("../examples/map_df.Rdata")
+source("../functions/createRandomMap.R")
+load("../examples/table_df.Rdata")
+source("../functions/createRandomTable.R")
+load("../examples/climObj.wind.Rdata")
+climObj <- climate$new(data_tables = list(read.csv("../examples/localFile.csv")), date_formats = list("%Y%m%d"))
+
+# Directory where Rpkgs are to be found
+RpkgsDir <- file.path("ACD_standalone", "ACD_App", "www", "R_pkgs", "win.binary") 
+
+# Directory where R libraries are to be found
+RlibsDir <- file.path("ACD_standalone", "ACD_App", "www", "libraries")
+
+# Rversion
+rversion_prev <- R.Version()
+rversion <- paste0(rversion_prev$major, ".", rversion_prev$minor)
+```
+
+<!-- Set up "columns" section -->  
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+   .col4 {
+    columns: 4 80px;
+    -webkit-columns: 4 80px;
+    -moz-columns: 4 80px;
+  }
+</style>
+
+\pagebreak
+
+```{r child = 'introduction.Rmd'}
+```
+
+```{r child = 'requirements.Rmd'}
+```
+
+```{r child = 'installation.Rmd'}
+```
+
+```{r child = 'connect_odbc.Rmd'}
+```
+
+```{r child = 'run.Rmd'}
+```
+
+```{r child = 'climsoft.Rmd'}
+```
+
+```{r child = 'localFile.Rmd'}
+```
+
+```{r child = 'references.Rmd'}
+```
+
+```{r child = 'annex1.Rmd'}
+```
+
+```{r include = FALSE}
+# Remove language variable to avoid conflict with the main code
+rm(language)
+```
+

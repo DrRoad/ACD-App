@@ -1,0 +1,54 @@
+<a name="local_file"></a>
+
+# LOCAL_FILE
+Se a opção `LOCAL_FILE` estiver selecionada, o usuário será solicitado a selecionar um ou mais arquivos ASCII com os dados que o usuário deseja visualizar. Os formatos aceitos são: `.txt` e` .csv`
+
+A estrutura dos dados armazenados no arquivo pode ser diferente, mas deve conter, pelo menos, as seguintes informações:
+
+* Identificador de estação (por exemplo, `station_id`)
+* Data ou data / hora em que a observação foi feita (por exemplo, `date`). Na maioria dos casos, a aplicação poderá detectar automaticamente o formato da data.
+* Nome do(s) elemento(s) observado(s) (por exemplo, `temp_max`)
+
+A tabela mostra um exemplo de uma estrutura de arquivo aceita:
+
+| station_id  | date       |     temp_max|
+|------------:|-----------:|------------:|
+|       IDL001|  1880-01-01|         32.0|
+|       IDL001|  1880-01-02|         34.7|
+|       IDL001|  1880-01-03|         32.7|
+|       IDL001|  1880-01-04|         33.2|
+|       IDL001|  1880-01-05|         34.0|
+|       IDL001|  1880-01-06|         33.4|
+
+Você pode baixar um exemplo de arquivo `.csv` [aqui](../examples/localFile.csv). 
+
+```{r, echo = FALSE}
+library(shiny)
+show_labelsNew()
+```
+
+Lembre-se de que o ACD-App só reconhecerá os elementos que têm um cabeçalho específico. Esses cabeçalhos são definidos na função
+`Ident_var` do pacote` climssc`. Você pode encontrar uma lista de cabeçalhos padrão usados no pacote `climssc` neste [arquivo](../examples/default_labels.csv) ou no [Anexo 1](#annex1).
+
+Uma vez que os arquivos foram selecionados, a App tentará reconhecer automaticamente os elementos disponíveis no (s) arquivo (s), bem como o formato de data. Se não for possível detectar essas variáveis automaticamente, o usuário receberá uma mensagem explicando qual é o problema.
+
+Se a App reconhece a estrutura do (s) arquivo (s), então ele pedirá ao usuário para selecionar um tipo de gráfico. As opções disponíveis são:
+`Histograma`,`Séries temporais`, `Comparação de séries temporais` e `Rosa dos Ventos`.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "type_graphics.png"))
+```
+<center>Figura 18. Tipo de gráficos disponíveis</center><br>
+
+Uma vez que o usuário tenha selecionado uma das opções, basta clicar em OK eo(s) gráfico(s) serão criados (veja a Figura 19). O aplicativo permite o download do gráfico, mas também o download dos dados.
+
+```{r, echo = FALSE,  include = FALSE}
+k <- climObj$timeseries_shiny()
+k1 <- k[[1]][[1]][[1]][[1]][[1]]
+#invisible(lapply(obj,function(x) plot(x,main="some plot")))
+```
+
+```{r, echo = FALSE, fig.height=2.5,fig.align='center' }
+k1
+```
+<center>Figura 19. Exemplo de uma série temporal interativa recuperada de um arquivo `.csv`</center><br>

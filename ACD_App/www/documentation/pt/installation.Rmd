@@ -1,0 +1,59 @@
+# Instalação e desinstalação
+
+## Instalação
+O Aplicativo é armazenado como um arquivo `.zip` para reduzir o tamanho dele. Existem dois arquivos `.zip` disponíveis:
+
+* `ACD_compact_small.zip` (cerca de 12 Mb): Contém as informações mínimas para instalar a aplicação. O usuário **precisará de conexão à Internet** para concluir a instalação, já que a App terá que baixar os R-Packages de um repositório R-CRAN (normalmente o repositório: <http: //cran.us.r-project. Org>) eo software necessário (ie MikTeX, Phantom, Pandoc)
+
+* `ACD_compact_large.zip` (cerca de 320 Mb): Contém todos os R-Packages e software necessários para a instalação da App. O usuário **não requer conexão à Internet**.
+
+Para prosseguir com a instalação, o usuário deve seguir estes passos:
+
+1. **Unzip file**: O usuário tem que descompactar o arquivo `ACD_compact_small.zip` ou `ACD_compact_large.zip` e colocar o conteúdo em qualquer pasta (por exemplo, `Desktop`,` Documents` ou qualquer outro).
+
+2. **Abrir pasta ACD_standalone**: Esta pasta contém todas as informações para instalar e executar a App.
+
+3. **Editar arquivo ACD.bat**: Clique com o botão direito do mouse nesse arquivo e selecione "Editar". Um editor irá abrir o arquivo `.bat` eo usuário pode então modificar o caminho onde` R` está localizado. O caminho padrão é:
+    ```{r, echo=FALSE}
+cat(file.path("C:", "Program Files", "R", rversion, "bin", "i386"))
+```
+
+    Onde `R-X.X.X` é a versão de` R`, e `i386` contém a versão` 32bit` de `R`.
+     Depois que as alterações forem feitas, salve as alterações e feche o Editor.
+
+4. **Execute ACD.bat:** Clique duas vezes no arquivo. Uma janela de comando será exibida.
+
+5. **Select Meteorological Service**: O usuário será solicitado a entrar no serviço meteorológico (`DMS`, `INAMET` ou` ZMD`). Esta informação tem de ser introduzida apenas uma vez.
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "select_metService.png"))
+```
+<center>Figura 1. Selecionar o Serviço Meteorológico</center><br>
+
+6. **Download dos pacotes:** Se o usuário usa o arquivo `ACD_compact_small.zip`, então o aplicativo baixará os R-Packages necessários automaticamente de um repositório R-CRAN. Caso contrário, o aplicativo conterá os pacotes necessários. Os pacotes serão salvos em:
+    ```{r, echo=FALSE}
+cat(RpkgsDir)
+```
+
+    > _**Nota:** Esta etapa pode levar alguns minutos. Por favor, seja paciente._
+
+7. **Descompacte e instale bibliotecas:** Uma vez que os pacotes são salvos localmente, a App continuará a descompactar e instalar os pacotes como bibliotecas. Essas bibliotecas serão localizadas em:
+    ```{r, echo=FALSE}
+cat(RlibsDir)
+```
+
+    > _**Nota:** Esta etapa pode levar alguns minutos. Por favor, seja paciente._
+
+8. **Download do phantomjs:** Se não estiver disponível na pasta `ACD_standalone`, o arquivo exactu do` phantomjs` será baixado da Internet.
+
+9. **Download e instale o Pandoc:** Se não estiver disponível na pasta `ACD_standalone`, o arquivo de instalação do` Pandoc` será baixado da Internet. Uma vez que o arquivo do instalador esteja disponível, ele será executado automaticamente para que o assistente de instalação apareça. O usuário terá que seguir as etapas do assistente.
+
+10. **Download e instale o MikTeX:** Se não estiver disponível a pasta `ACD_standalone`, o arquivo instalador do` MikTeX` será baixado da Internet. Uma vez que o arquivo do instalador esteja disponível, ele será executado automaticamente para que o assistente de instalação apareça. O usuário terá que seguir as etapas do assistente.
+
+Quando o processo de instalação estiver concluído, o `ACD-App` será aberto automaticamente.
+
+O App pode ser parado a qualquer momento fechando a janela de comando. Para voltar a executar a aplicação, execute novamente o ficheiro `ACD_App.bat`. O `ACD_App` será então pop-up automaticamente.
+
+## Desinstalação
+
+Para desinstalar a App, basta remover a pasta `ACD_standalone`.

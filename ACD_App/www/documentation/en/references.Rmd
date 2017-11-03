@@ -1,0 +1,12 @@
+<a name="references"></a>
+
+# References
+
+ETCCDI/CRD (2017). *ETCCDI/CRD Climate Change Indices. Software* <http://etccdi.pacificclimate.org/software.shtml> [last accessed: 24.04.2017]
+
+RStudio (2017). *Easy web applications in R*. <https://www.rstudio.com/products/shiny/> [last accessed: 11.04.2017]
+
+Wickham (2017). *R Packages*. <http://r-pkgs.had.co.nz/intro.html> [last accessed: 12.04.2017]
+
+Wikipedia (2017). *Open Database Connectivity*. <https://en.wikipedia.org/wiki/Open_Database_Connectivity> [last accessed: 11.04.2017]
+

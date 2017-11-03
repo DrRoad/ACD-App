@@ -1,0 +1,72 @@
+# Requisitos
+
+## Requisitos de software
+O software necessário para a instalação do aplicativo é:
+
+* Windows 7 ou superior
+* Java SE Runtime Environment 7 ou superior (<http://www.oracle.com/technetwork/java/javase/downloads/index.html>)
+* R v3.2.1 ou superior (<https://cran.r-project.org/bin/windows/base/>)
+* RStudio v0.99.467 ou superior (<https://www.rstudio.com/products/rstudio/download/>)
+* Rtools v.3.2 ou superior (<https://cran.r-project.org/bin/windows/Rtools/>)
+* Um navegador da Web, como Mozilla Firefox, Chrome ou Internet Explorer (v.11 ou superior)
+
+Além deste software, o aplicativo também requer programas adicionais para estar totalmente operacional:
+
+* MikTeX (<https://miktex.org/>): Para criar arquivos `.pdf` corretamente
+* Phantomjs (<http://phantomjs.org/>): Para fazer download de mapas de folhetos como arquivos `.png` de forma adequada.
+* Pandoc (<http://pandoc.org/>): Um conversor de documentos universal. Será necessário criar os arquivos de ajuda.
+
+Se esses programas não estiverem disponíveis no localhost, o aplicativo os instalará automaticamente. A tabela a seguir mostra as versões padrão que o aplicativo irá instalar, bem como os links para os arquivos de download. O usuário pode instalar uma versão posterior de cada software a qualquer momento.
+
+| Programa      | Versão padrão     | Link para downloader                             |
+|---------------|:------------------|--------------------------------------------------|
+| MikTeX        | V2.9.6361-x64     |<https://miktex.org/download>                     |
+| Phantomjs     | V2.1.1            |<https://bitbucket.org/ariya/phantomjs/downloads> |
+| Pandoc        | V1.19.2.1         |<http://pandoc.org/installing.html>               |
+
+## Pacotes do R
+
+O ACD-App requer um número de R-pacotes para funcionar corretamente. O pacote é a unidade fundamental do código compartilhável em R. Um pacote agrega código, dados, documentação, etc. e é fácil de compartilhar com outros ([Wickham, 2017](#references)). A maioria dos pacotes necesários está disponível on-line e serán instalados automaticamente pela App.
+
+<div class = "row">
+<div class = "col-md-4">
+```{R, warning = FALSE, echo = FALSE}
+cat(paste0 (pkgs [[1]] [1:13], collapse = "\n"))
+```
+</div>
+
+<div class = "col-md-4">
+```{R, warning = FALSE, echo = FALSE}
+cat(paste0(pkgs[[1]][14:26], collapse = "\n"))
+```
+</div>
+
+<div class = "col-md-4">
+```{R, warning = FALSE, echo = FALSE}
+cat(paste0 (pkgs[[1]][27:length(pkgs[[1]])], collapse = "\n"))
+```
+</div>
+</div>
+
+No entanto, existem poucos pacotes desenvolvidos especificamente pela SASSCAL que não estão disponíveis na Internet, mas são exigidos pela App. Esses pacotes são incluídos por padrão na pasta ACD-App, para que a App possa ter acesso a eles. Esses pacotes são:
+
+```{R, echo = FALSE}
+cat(paste0 (pkgs [[2]], collapse = "\n"))
+```
+
+Certos pacotes são necessários em uma versão específica, ou não são facilmente descarregáveis da Internet. Esses pacotes são incluídos por padrão no `ACD-App` para que o aplicativo não precise baixar-os da Internet:
+
+```{r,  warning = FALSE, echo = FALSE}
+cat(pkgs[[3]])
+```
+
+* Pacote `lubridate` (versão requerida: `v1.5.6.`). Ele é usado para manipular facilmente datas e horas, é um caso especial, uma vez que a Aplicação requer uma versão específica (v1.5.6). O pacote pode ser baixado da Internet, mas as versões mais recentes não são compatíveis com o aplicativo ACD.
+
+* `Pacote knitr` (versão requerida: `v1.14`). É exigido pelo pacote `RMarkdown` para criar os arquivos de documentação corretamente. O pacote pode ser baixado da Internet, mas as versões mais recentes não são compatíveis com o `RMarkdown`.
+
+* Pacote `rlang` (versão requerida: `v.0.1.1`). É exigido por pacotes diferentes, mas no repositório R está disponível apenas no formulário `source`. Portanto, o aplicativo não poderá baixar o arquivo `win.binary` da Internet.
+
+Os pacotes são salvos no seguinte caminho:
+```{R, echo = FALSE}
+cat(RpkgsDir)
+```

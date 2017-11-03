@@ -1,0 +1,23 @@
+# Executando o ACD-App
+
+Para executar o aplicativo, basta clicar duas vezes no arquivo `ACD-App.bat`. Após alguns segundos, abre-se um navegador web. A interface ACD-App aparece diretamente no navegador da Web (consulte a Figura 9). O aplicativo está pronto para usar!
+
+Também pode ser acessado a partir de outros computadores conectados à Intranet. Para acessar o ACD-App de outro PC, abra um navegador (por exemplo, Mozilla) e digite o seguinte Endereço:
+
+```{r, echo = FALSE}
+x <- system("ipconfig", intern=TRUE)
+z <- x[grep("IPv4", x)]
+ip <- gsub(".*? ([[:digit:]])", "\\1", z)
+
+cat(paste0("http://",ip, ":3182"))
+```
+
+O usuário tem que selecionar então sobre da seguinte fonte de dados:
+
+* CLIMSOFT
+* LOCAL_FILE
+
+```{r, out.width = "500px", echo = FALSE}
+knitr::include_graphics(file.path(fig.path, "data_source.png"))
+```
+<center>Figura 10. Fonte de dados disponível</center><br>
